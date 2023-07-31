@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "penelitian"
+version = "0.1.0"
+description = "This is apps for research in automatic essay assesment"
+authors = ["bagussr <bagusssyamsu@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^4.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

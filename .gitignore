@@ -1,0 +1,9 @@
+**/__pycache__
+
+penelitian/src/build
+
+node_modules
+
+.env
+
+poetry.lock
