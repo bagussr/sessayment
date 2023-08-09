@@ -1,9 +1,11 @@
 **/__pycache__
+poetry.lock
 
-penelitian/src/build
+sessayment/src/views
+sessayment/db.sqlite3
 
 node_modules
+sessayment/yarn.lock
+
 
 .env
-
-poetry.lock
