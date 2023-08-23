@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>Login</title>
+    <script async type="module" crossorigin src="/assets/index-b8dcdbd2.js"></script>
+    <link rel="stylesheet" href="/assets/index-6917e5af.css">
+  </head>
+  <body>
+    <main
+      class="bg-brand-primary w-screen min-h-screen justify-center flex flex-col items-center"
+    >
+      <div class="flex flex-col items-center justify-center sm:w-1/2 w-full">
+        <!-- Header -->
+        <span
+          class="flex gap-x-5 items-center w-64 sm:w-fit sm:flex-col sm:gap-y-4"
+        >
+          <img
+            width="50"
+            src="/assets/logo_upi-716cd128.png"
+            alt="Logo Upi"
+          />
+          <h1 class="font-bold text-xl sm:text-2xl mt-5">SESSAYMENT</h1>
+        </span>
+        <!-- Form -->
+        <div class="flex w-[70%] mt-20">
+          <form
+          id="form-login"
+            method="post"
+            name="form-login"
+            class="flex flex-col w-full gap-y-5"
+          >
+            {% csrf_token %}
+            <input
+              type="text"
+              placeholder="Username atau Email"
+              class="rounded-md"
+              name="username"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              class="rounded-md"
+              name="password"
+            />
+            {% if error %}
+            <div class="p-2 bg-red-300 text-red-500 rounded text-center">
+              {{error}}
+            </div>
+            {% endif %}
+            <button class="button-2">Sing In</button>
+          </form>
+        </div>
+      </div>
+      <span class="absolute bottom-10"
+        ><p>
+          don't have account?
+          <a href="../signup" class="font-bold">Sign Up</a>
+        </p>
+      </span>
+    </main>
+  </body>
+  <script>
+    const form = document.getElementById('form-login');
+    form.addEventListener('submit', ()=>{
+      window.localStorage.setItem('login', true)
+    })
+  </script>
+</html>
