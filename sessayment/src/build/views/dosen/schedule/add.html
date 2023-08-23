@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+    <title>Tambah Jadwal Ujian</title>
+    <script type="module" crossorigin src="/assets/index-b8dcdbd2.js"></script>
+    <script type="module" crossorigin src="/assets/vendor-8b449814.js"></script>
+    <script type="module" crossorigin src="/assets/app-fc65f67c.js"></script>
+    <link rel="stylesheet" href="/assets/index-6917e5af.css">
+    <link rel="stylesheet" href="/assets/app-bcdaabcb.css">
+  </head>
+  <body class="relative w-full h-screen">
+    <button class="absolute top-5 left-5" onclick="onBack()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        class="sm:w-6 sm:h-6 w-5 h-5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+        />
+      </svg>
+    </button>
+    <main class="flex flex-col w-full h-full">
+      <div
+        class="bg-brand-secondary flex items-center justify-start w-fit mt-20 py-4 pr-12 rounded-md"
+      >
+        <span
+          class="bg-brand-primary sm:p-20 p-8 sm:!w-[30rem] !w-44 sm:py-14 py-8 font-bold sm:text-3xl text-xl text-center rounded-md"
+        >
+          Tambah Jadwal Ujian
+        </span>
+      </div>
+
+      <div class="flex w-full sm:!p-20 !p-2 !pt-10">
+        <form
+          method="post"
+          action="{% url 'schedule.add' %}"
+          class="w-full flex flex-col gap-y-6"
+        >
+          {% csrf_token %}
+          <span class="w-full flex gap-x-5 items-center">
+            <label
+              for="matkul"
+              class="flex mb-2 sm:!text-sm !text-xs font-medium text-gray-900 sm:!w-44 !w-32"
+              >Nama Mata Kuliah
+            </label>
+            <select
+              id="matkul"
+              name="matkul"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            >
+              <option selected>Pilih Matakuliah</option>
+              {% if matkul %} {% for matkul in matkul %}
+              <option value="{{ matkul.id }}">{{ matkul.name }}</option>
+              {% endfor %} {% endif %}
+            </select>
+          </span>
+          <span class="w-full flex gap-x-5 items-center">
+            <label
+              for="ujian"
+              class="flex mb-2 sm:!text-sm !text-xs font-medium text-gray-900 sm:!w-44 !w-32"
+              >Jenis Ujian</label
+            >
+            <select
+              id="ujian"
+              name="ujian"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            >
+              <option selected>PIlih Jenis Ujian</option>
+              <option value="3">KUIS</option>
+              <option value="2">UAS</option>
+              <option value="1">UTS</option>
+            </select>
+          </span>
+          <span class="w-full flex sm:gap-x-5 gap-x-4 items-center">
+            <label
+              for="date"
+              class="flex mb-2 sm:!text-sm !text-xs font-medium text-gray-900 sm:!w-44 !w-28"
+              >Jadwal Ujian</label
+            >
+            <div class="relative w-full">
+              <div
+                class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none"
+              >
+                <svg
+                  class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                  />
+                </svg>
+              </div>
+              <input
+                datepicker
+                datepicker-format="yyyy-mm-dd"
+                id="date"
+                type="text"
+                name="tanggal"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Select date"
+              />
+            </div>
+          </span>
+          <div class="flex w-full sm:!gap-x-8 !gap-x-1">
+            <span class="w-full flex sm:!gap-x-12 !gap-x-4 items-center">
+              <label
+                for="default-input"
+                class="flex mb-2 sm:!text-sm !text-xs font-medium text-gray-900 sm:!w-44 !w-12"
+                >Waktu Ujian</label
+              >
+              <input
+                type="time"
+                id="starttime"
+                name="starttime"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:!w-full !w-24 p-2.5"
+              />
+            </span>
+            <span class="w-full flex items-center">
+              <label
+                for="default-input"
+                class="flex mb-2 sm:!text-sm !text-xs font-medium text-gray-900 sm:!w-24 !w-12"
+                >s.d.</label
+              >
+              <input
+                type="time"
+                id="endtime"
+                name="endtime"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:!w-full !w-24 p-2.5"
+              />
+            </span>
+          </div>
+          {% if error %}
+          <div class="w-full flex items-center justify-center">
+            <p class="text-red-500 text-sm">{{ error }}</p>
+          </div>
+          {% endif %}
+          <button
+            class="button-1 !bg-brand-primary sm:!self-end !self-center sm:!mt-8 !mt-12"
+            type="submit"
+          >
+            Tambah Jadwal
+          </button>
+        </form>
+      </div>
+    </main>
+    <script>
+      var nowLocation = window.location.href;
+      function onClick(route) {
+        window.location.href = nowLocation + route;
+      }
+
+      function onBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>

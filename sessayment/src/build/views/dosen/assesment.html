@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soal Ujian</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script async type="module" crossorigin src="/assets/index-b8dcdbd2.js"></script>
+    <link rel="stylesheet" href="/assets/index-6917e5af.css">
+  </head>
+  <body class="relative w-full h-full">
+    <button class="absolute top-5 left-5" onclick="onBack()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        class="sm:w-6 sm:h-6 w-5 h-5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+        />
+      </svg>
+    </button>
+
+    <main class="flex flex-col w-full h-full">
+      <div
+        class="bg-brand-secondary flex items-center justify-start w-fit mt-20 py-4 pr-12 rounded-md"
+      >
+        <span
+          class="bg-brand-primary sm:p-20 p-8 sm:w-[30rem] w-44 sm:py-14 py-8 font-bold sm:text-3xl text-xl text-center rounded-md"
+        >
+          Soal Ujian
+        </span>
+      </div>
+
+      <div class="flex flex-col gap-y-10 w-52 pt-20 ms-10">
+        <span class="flex gap-x-8 justify-between items-center">
+          <p class="font-bold">Jumlah Soal</p>
+          <span
+            class="sm:w-12 sm:h-12 w-10 h-10 border border-gray-600 rounded-lg flex items-center justify-center"
+          >{{soal}}</span
+        ></span>
+        <span class="flex gap-x-8 justify-between items-center"
+          ><p class="font-bold">Skor Maksimal</p>
+          <span
+            class="sm:w-12 sm:h-12 w-10 h-10 border border-gray-600 rounded-lg flex items-center justify-center"
+          >{{poin}}</span>
+        </span>
+      </div>
+
+      <button
+      onclick="onClick()"
+        class="button-1 sm:w-64 w-40 sm:self-end self-center mt-24 sm:mr-44"
+      >
+        Buat Soal
+      </button>
+    </main>
+    <script>
+      var nowLocation = window.location.href;
+      function onClick() {
+        window.location.href = "{% url 'schedule.add.question' id=id %}"
+      }
+
+      function onBack() {
+        window.location.href = "{% url 'schedule.action' id=id %}"
+      }
+    </script>
+  </body>
+</html>
