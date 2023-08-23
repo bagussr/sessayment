@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Dosen</title>
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.js"
+      integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" crossorigin src="/assets/index-b8dcdbd2.js"></script>
+    <script type="module" crossorigin src="/assets/vendor-8b449814.js"></script>
+    <script type="module" crossorigin src="/assets/app-fc65f67c.js"></script>
+    <link rel="stylesheet" href="/assets/index-6917e5af.css" />
+    <link rel="stylesheet" href="/assets/app-bcdaabcb.css" />
+  </head>
+  <body class="w-screen h-screen relative overflow-x-hidden">
+    <button
+      class="absolute top-5 left-5 cursor-pointer z-50"
+      onclick="onBack()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        class="sm:w-6 sm:h-6 w-5 h-5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+        />
+      </svg>
+    </button>
+    <main class="flex flex-col w-full h-full relative">
+      <div
+        class="bg-brand-secondary flex items-center justify-start w-fit mt-20 py-4 pr-12 rounded-md"
+      >
+        <span
+          class="bg-brand-primary sm:p-20 p-8 sm:!w-[30rem] !w-44 sm:!py-14 !py-8 font-bold sm:text-3xl text-xl text-center rounded-md"
+        >
+          Data Dosen
+        </span>
+      </div>
+      <section
+        class="w-full h-full flex justify-between sm:py-10 py-5 flex-col-reverse sm:flex-row"
+      >
+        <div class="sm:p-10 py-2 overflow-auto">
+          <table class="sm:w-full w-[25rem] text-sm text-gray-500 text-center">
+            <thead
+              class="text-[.6rem] sm:text-xs text-gray-700 uppercase bg-brand-secondary leading-normal"
+            >
+              <tr>
+                <th scope="col" class="sm:px-6 px-2 sm:py-3 sm:w-20 w-12">
+                  No
+                </th>
+                <th scope="col" class="sm:px-6 px-2 sm:py-3">NIP</th>
+                <th scope="col" class="sm:px-6 px-2 sm:py-3 w-64">Nama</th>
+                <th scope="col" class="sm:px-6 px-2 sm:py-3 w-20">Email</th>
+                <th scope="col" class="sm:px-6 px-2 sm:py-3 w-20">Jurusan</th>
+                <th scope="col" class="sm:px-6 px-2 sm:py-3 w-20">Staff</th>
+                <th scope="col" class="sm:px-6 px-2 sm:py-3 w-20">Action</th>
+              </tr>
+            </thead>
+            <tbody class="text-xs sm:text-md">
+              {% if dosen %} {% for d in dosen %}
+              <tr class="bg-white">
+                <th
+                  scope="row"
+                  class="sm:px-6 px-2 sm:py-4 py-2 font-medium text-gray-900 whitespace-nowrap"
+                >
+                  {{ forloop.counter }}
+                </th>
+                <td class="sm:px-6 px-2 sm:py-4">{{ d.unique_id }}</td>
+                <td class="sm:px-6 px-2 sm:py-4">
+                  {{ d.first_name }} {{ d.last_name }}
+                </td>
+                <td class="sm:px-6 px-2 sm:py-4">{{ d.email }}</td>
+                <td class="sm:px-6 px-2 sm:py-4">{{ d.jurusan }}</td>
+                <td class="sm:px-6 px-2 sm:py-4">
+                  <input
+                    type="checkbox"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                    {% if d.is_staff %}checked{% endif %} disabled
+                  />
+                </td>
+                <td>
+                  <span class="flex gap-x-4 justify-center items-center">
+                    <button
+                      data-id="{{ d.id }}"
+                      data-modal-toggle="modal-edit"
+                      class="font-medium text-blue-600 hover:underline"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      data-id="{{ d.id }}"
+                      data-target="delete"
+                      class="font-medium text-red-600 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </span>
+                </td>
+              </tr>
+              {% endfor %} {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="bg-brand-secondary sm:!p-10 p-5 h-fit rounded-s-lg">
+          <form
+            method="post"
+            action="{% url 'admin.dosen' %}"
+            class="flex flex-col"
+          >
+            {% csrf_token %}
+            <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+              <label
+                for="name"
+                class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24"
+              >
+                Nama Lengkap
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                placeholder="Bagus Sr"
+                required
+              />
+            </div>
+            <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+              <label
+                for="nim"
+                class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24"
+              >
+                NIM
+              </label>
+              <input
+                type="text"
+                id="nim"
+                name="nim"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                placeholder="20032423"
+                required
+              />
+            </div>
+            <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+              <label
+                for="jurusan"
+                class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24"
+              >
+                Jurusan
+              </label>
+              <input
+                type="text"
+                id="jurusan"
+                name="jurusan"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                placeholder="Rekayasa Perangkat Lunak"
+                required
+              />
+            </div>
+            <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+              <label
+                for="email"
+                class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                placeholder="john.doe@company.com"
+                required
+              />
+            </div>
+            {% if error %}
+            <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+              <p class="text-red-500">{{ error }}</p>
+            </div>
+            {% endif %}
+            <button
+              type="submit"
+              class="self-end sm:!button-1 !bg-brand-primary px-2 py-1 rounded text-sm font-bold"
+            >
+              Tambah Data
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+    <div
+      id="modal-edit"
+      tabindex="-1"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <button
+            type="button"
+            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="modal-edit"
+          >
+            <svg
+              class="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+          <div class="px-6 py-6 lg:px-8">
+            <h3 class="mb-4 text-xl font-medium text-gray-900">Edit Dosen</h3>
+            <form class="gap-y-3 flex flex-col" id="edit-form">
+              <input type="hidden" name="id" id="id" />
+              <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                <label
+                  for="name"
+                  class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24"
+                >
+                  Nama Lengkap
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                  placeholder="Bagus Sr"
+                  required
+                />
+              </div>
+              <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                <label
+                  for="nim"
+                  class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24"
+                >
+                  NIM
+                </label>
+                <input
+                  type="text"
+                  id="nim"
+                  name="nim"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                  placeholder="20032423"
+                  required
+                />
+              </div>
+              <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                <label
+                  for="jurusan"
+                  class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24"
+                >
+                  Jurusan
+                </label>
+                <input
+                  type="text"
+                  id="jurusan"
+                  name="jurusan"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                  placeholder="Rekayasa Perangkat Lunak"
+                  required
+                />
+              </div>
+              <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                <label
+                  for="email"
+                  class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                  placeholder="john.doe@company.com"
+                  required
+                />
+              </div>
+              <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                <label
+                  for="is_staff"
+                  class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24"
+                >
+                  Staff
+                </label>
+                <input
+                  id="is_staff"
+                  name="is_staff"
+                  type="checkbox"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                />
+              </div>
+              {% if error %}
+              <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                <p class="text-red-500">{{ error }}</p>
+              </div>
+              {% endif %}
+              <button
+                type="submit"
+                class="button-1 !bg-brand-secondary hover:!bg-brand-primary"
+              >
+                Edit Dosen
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var id;
+      $('button[data-modal-toggle="modal-edit"]').click(function () {
+        id = $(this).data('id');
+        const data = getDosen(id);
+      });
+      const form = $('#edit-form');
+
+      $('button[data-target="delete"]').click(function () {
+        id = $(this).data('id');
+        window.location.href = `http://localhost:8000/admin/dosen/delete/${id}`;
+      });
+
+      form.on('submit', e => {
+        e.preventDefault();
+        data = new FormData();
+        data.append('id', form.find('#id').val());
+        data.append('name', form.find('#name').val());
+        data.append('nim', form.find('#nim').val());
+        data.append('jurusan', form.find('#jurusan').val());
+        data.append('email', form.find('#email').val());
+        data.append('is_staff', form.find('#is_staff').is(':checked'));
+        $.ajax({
+          method: 'POST',
+          url: 'http://localhost:8000/admin/dosen/edit',
+          contentType: false,
+          processData: false,
+          cache: false,
+          data: data,
+          success: function (data) {
+            window.location.reload();
+          },
+          error: function (err) {
+            console.log(err);
+          },
+        });
+      });
+
+      const getDosen = id => {
+        $.ajax({
+          url: 'http://localhost:8000/admin/dosen/detail/' + id,
+          type: 'GET',
+          success: function (data) {
+            form.find('#name').val(data.name);
+            form.find('#nim').val(data.unique_id);
+            form.find('#jurusan').val(data.jurusan);
+            form.find('#email').val(data.email);
+            form.find('#id').val(data.id);
+            form.find('#is_staff').prop('checked', data.is_staff);
+          },
+        });
+      };
+      var nowLocation = window.location.href;
+      function onClick(route) {
+        window.location.href = nowLocation + route;
+      }
+
+      function onBack() {
+        window.location.href = "{% url 'admin.index' %}";
+      }
+    </script>
+  </body>
+</html>

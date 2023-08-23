@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Data Mahasiswa</title>
+        
+        
+      <script type="module" crossorigin src="/assets/index-b8dcdbd2.js"></script>
+      <script type="module" crossorigin src="/assets/vendor-8b449814.js"></script>
+      <script type="module" crossorigin src="/assets/app-fc65f67c.js"></script>
+      <link rel="stylesheet" href="/assets/index-6917e5af.css">
+      <link rel="stylesheet" href="/assets/app-bcdaabcb.css">
+    </head>
+    <body class="w-screen h-screen relative overflow-x-hidden">
+        <button class="absolute top-5 left-5 cursor-pointer z-50" onclick="onBack()">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke-width="2"
+                 stroke="currentColor"
+                 class="sm:w-6 sm:h-6 w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+        </button>
+        <main class="flex flex-col w-full h-full relative">
+            <div class="bg-brand-secondary flex items-center justify-start w-fit mt-20 py-4 pr-12 rounded-md">
+                <span class="bg-brand-primary sm:p-20 p-8 sm:!w-[30rem] !w-44 sm:!py-14 !py-8 font-bold sm:text-3xl text-xl text-center rounded-md">
+                    Data Mahasiswa
+                </span>
+            </div>
+            <section class="w-full h-full flex justify-between sm:py-10 py-5 flex-col-reverse sm:flex-row">
+                <div class="sm:p-10 py-2 overflow-auto">
+                    <table class="sm:w-full w-[25rem] text-sm text-gray-500 text-center">
+                        <thead class="text-[.6rem] sm:text-xs text-gray-700 uppercase bg-brand-secondary leading-normal">
+                            <tr>
+                                <th scope="col" class="sm:px-6 px-2 sm:py-3 sm:w-20 w-12">No</th>
+                                <th scope="col" class="sm:px-6 px-2 sm:py-3 ">NIM</th>
+                                <th scope="col" class="sm:px-6 px-2 sm:py-3 w-64">Nama</th>
+                                <th scope="col" class="sm:px-6 px-2 sm:py-3 w-20">Email</th>
+                                <th scope="col" class="sm:px-6 px-2 sm:py-3 w-20">Jurusan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-xs sm:text-md">
+                            {% if mahasiswa %}
+                                {% for mhs in mahasiswa %}
+                                    <tr class="bg-white">
+                                        <th scope="row"
+                                            class="sm:px-6 px-2 sm:py-4 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                            {{ forloop.counter }}
+                                        </th>
+                                        <td class="sm:px-6 px-2 sm:py-4">{{ mhs.unique_id }}</td>
+                                        <td class="sm:px-6 px-2 sm:py-4">{{ mhs.first_name }} {{mhs.last_name}}</td>
+                                        <td class="sm:px-6 px-2 sm:py-4">{{ mhs.email }}</td>
+                                        <td class="sm:px-6 px-2 sm:py-4">{{ mhs.jurusan }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-brand-secondary sm:!p-10 p-5 h-fit rounded-s-lg">
+                    <form method="post"
+                          action="{% url 'admin.mahasiswa' %}"
+                          class="flex flex-col">
+                        {% csrf_token %}
+                        <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                            <label for="name"
+                                   class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24">
+                                Nama Lengkap
+                            </label>
+                            <input type="text"
+                                   id="name"
+                                   name="name"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                                   placeholder="Bagus Sr"
+                                   required />
+                        </div>
+                        <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                            <label for="nim"
+                                   class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24">
+                                NIM
+                            </label>
+                            <input type="text"
+                                   id="nim"
+                                   name="nim"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                                   placeholder="20032423"
+                                   required />
+                        </div>
+                        <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                            <label for="jurusan"
+                                   class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24">
+                                Jurusan
+                            </label>
+                            <input type="text"
+                                   id="jurusan"
+                                   name="jurusan"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                                   placeholder="Rekayasa Perangkat Lunak"
+                                   required />
+                        </div>
+                        <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                            <label for="email"
+                                   class="block mb-2 sm:!text-sm text-xs font-medium text-gray-900 sm:!w-44 w-24">
+                                Email
+                            </label>
+                            <input type="email"
+                                   id="email"
+                                   name="email"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:!text-sm text-xs sm:rounded-lg rounded focus:ring-blue-500 focus:border-blue-500 block w-full sm:!p-2.5 p-1"
+                                   placeholder="john.doe@company.com"
+                                   required />
+                        </div>
+                        {% if error %}
+                            <div class="sm:mb-6 mb-2 flex gap-x-5 items-center">
+                                <span class="text-red-500 text-xs">{{ error }}</span>
+                            </div>
+                        {% endif %}
+                        <button type="submit"
+                                class="self-end sm:!button-1 !bg-brand-primary px-2 py-1 rounded text-sm font-bold">
+                            Tambah Data
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </main>
+        <script>
+      var nowLocation = window.location.href;
+      function onClick(route) {
+        window.location.href = nowLocation + route;
+      }
+
+      function onBack() {
+        window.history.back();
+      }
+        </script>
+    </body>
+</html>
