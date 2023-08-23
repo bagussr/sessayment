@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>Jadwal Mahasiswa</title>
+    <script async type="module" crossorigin src="/assets/index-b8dcdbd2.js"></script>
+    <script async type="module" crossorigin src="/assets/index-b8dcdbd2.js"></script>
+    <link rel="stylesheet" href="/assets/index-6917e5af.css">
+  </head>
+  <body>
+    <main class="relative" id="main">
+      <a class="!absolute !top-5 !right-5" href="{% url 'logout' %}">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAwCAYAAABT9ym6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAATVSURBVHgB1VrNUttWFD7nylAynem408SFdKZVFp0RDDiK6SK72E9Q+gTAsqukqy5t3oDuuqt5gpInwHmAguJScFcRm4YSZuJuoKlH9/Rc+U9/xjhXcuCbAenqCnQ/nXPPrxCmAGv5mzIKeogENiHZfCnP53niY+hGBJd/t4GQf+ilh9gQHc9ptRx33DMQMoJl2SbmxDNEWI8teGJggxDqreZvOyPvgJRhmnb+zieiCgTPIH24hFhLIpQqEV8KM2KPT83kO8hltXGIWH0QTiC+GCW5r/i+PEvSJsBESfJc7ai5vxX523QwigQRNXh/7F4K2HEdpw0TwFq2y4i4wadPeKlmcC5KJjUiiyulVxAiQS6T2GwdOg3QhGXzS/KwxstdD00g/HDc3N/unqYAq1iqshWqDa8wCYMqLWe8tZnoOculGkuiGrjUvjTkAyVpAzRh23bek/gzBCwTk3iUNgmF87PXjXuFhU/59T/uXZqblfjuDV8XoIl/PbEGAZViU1vPgkQfH+VkDZWv6T8P4ak6ahPBqN4acgsyhMNqxFYvaH7zyiikQMT31N1zIidLafRBIHeDYyRhaxH5esm2g16b7f4LmALmcuAExyTgoRYRQ+TCDov8WClzOF1/5PbHgkhPIoDSDA4JpQNTA7rD52I+N+525bHFjFH1NbMjt4KR6Jwhd995WO16XXLTcH7XBa/mBIdu0LySSD/sICBTjXEG1bHSn++J+MES75WL2emo1SiMJJIYO1HyvUdHzhRVKhmJRNQb5p28F84jOOzI0SbcUMQ2+0gSGcROaSJExCqurt9GEgoD1VIk2DPXQ9uAPfVljiqT5hEfAr5EFourTxWJ0MwtIqGQU7kEL7oWm0G073j4lhMmyBJ+JIuwHU1dJ4UIJ0TTh9qPHM3WlLkHDbBqUQM+ODgqaOkZkxxbpE30YC+a3HNs7JDE55AxUMi3HL1qPyenzCon9xUh4VciHOQWoM6F3G41nR24BfCtliIzK6iCLIXgJCcsdator8MtwMAhqgBwFJklZdluOEKeXZE5ah48Yr0KqZOyKjedTGJidfz7wUYSmcViKYt6bioYmSEqMrz4cH1V0o3dL1emuq3D/VqYTNwcq96HqgDqOjRdXKtk6of2EE+gesnXq95wUL6EKWBxZZV9H5X7zx6bsyuMzABnRDkwys/951cd6zBlcMDralVRPC9cNeECs2Zn6voIFgY5XmtrEfk4WnAQA1FnimhhkGm91CISLZTxP3wCU4BhCDs4RpR72rVflmvQkvkFZcgY0cL5hQEvtInECsqImUYA1kppI2Ct1Aqep9LoOT87de99Pl8epgFoFuYX4M3fr1MvaPvm3sBfIFg4J/perUGbiMLdwvxJr2nZRzltMkkFQ7+pdHjwkzpPhYh6I3cLC8wFyoHL5UJhYe2zwhd/np/95cJ7QvXt7395/0cUWOfh/HCGW92cFJ6fnvoOON0+e7xZ2YerjIL6JIM84XYuOq7rJkcAlvXYlDMd20DutxOsKX8R/3IiXmtL/cuHK8ikAy5Tcen2u2jBMJNvUUb2xTXAkmlzDWHr+I9uXz0+nyF8QhK+BYlrbJfLMDFYhSQ2OH/YGdd7yZRIFCqKloL1HdnykDCj835FheAf4YGj+i2TRNL/A71pJF+m0cYjAAAAAElFTkSuQmCC" alt="Logout" class="w-6" />
+      </a>
+      <section
+        id="schedule"
+        class="sm:p-24 p-6 sm:mt-0 flex flex-wrap sm:gap-x-10 gap-x-4 sm:gap-y-8 gap-y-6 pt-24"
+      >
+      {% if assesment %} 
+        {% for item in assesment %}
+        <div class="flex flex-col gap-y-4">
+          <a
+            href="terms/{{item.id}}"
+            class="rounded bg-brand-primary sm:w-80 w-32 sm:h-44 h-24 flex items-center justify-center cursor-pointer"
+            data="data-{{item.id}}"
+          >
+            <h2 class="font-bold sm:w-32 w-24 text-center sm:text-xl text-sm">
+              {{item.mata_kuliah.name}}
+            </h2>
+          </a>
+          <span class="flex flex-col">
+            <h3 class="font-bold">{{item.jenis_ujian}}</h3>
+            <p class="text-xs">{{item.tanggal}}</p>
+            <p class="text-xs">{{item.waktu_mulai}} - {{item.waktu_selesai}}  </p>
+          </span>
+        </div>
+        {% endfor %}
+      {% endif %}
+      </section>
+    </main>
+    <script>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assesment</title>
+    <script
+      type="module"
+      crossorigin
+      src="/assets/mahasiswaAssessment-a717f40b.js"
+    ></script>
+    <link rel="modulepreload" crossorigin href="/assets/index-b8dcdbd2.js" />
+    <link rel="modulepreload" crossorigin href="/assets/vendor-8b449814.js" />
+    <link rel="stylesheet" href="/assets/index-6917e5af.css" />
+  </head>
+  <body>
+    <main class="flex flex-col w-max h-screen sm:gap-y-3 gap-y-6">
+      <input type="hidden" name="time_assesment" value="{{ time_assesment }}">
+      <input type="hidden" name="start_time" value="{{ start_time|date:'Y-m-d H:i' }}">
+      <input type="hidden" name="assesment_start" value="{{ assesment.waktu_mulai|date:'H:i' }}" >
+      <section
+        class="w-screen flex justify-between sm:p-12 sm:px-12 p-6 py-8 items-center"
+      >
+        <span
+          class="px-3 sm:py-2 py-1 bg-brand-primary rounded-md sm:text-lg text-sm flex gap-x-2"
+          > <p id="no_soal" data-soal="{{len_question}}"></p>/ <p>
+            {{ len_question }}
+          </p> 
+          </span
+        >
+        <div class="flex gap-x-4 items-center">
+          <span class="flex gap-x-6">
+            <button id="prev_question" class="bg-brand-primary rounded-full p-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="sm:w-6 sm:h-6 w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                />
+              </svg>
+            </button>
+            <button id="next_question" class="bg-brand-primary rounded-full p-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="sm:w-6 sm:h-6 w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </button>
+          </span>
+          <button class="sm:button-2 button-2 px-2 sm:px-4 sm:text-lg text-sm" id="submit-assesment"> 
+            Submit
+          </button>
+        </div>
+      </section>
+      <section class="flex sm:px-12 px-6 items-center sm:gap-x-10 gap-x-2">
+        <p class="sm:text-lg text-md" id="startTime">00:00</p>
+        <div class="flex relative w-full h-2">
+          <span
+            class="w-full h-2 bg-brand-primary rounded-md opacity-20"
+          ></span>
+          <span
+            class="h-2 absolute bg-brand-primary rounded-md"
+            id="distanceTime"
+          ></span>
+        </div>
+        <p class="sm:text-lg text-md" id="endTime">00:00</p>
+      </section>
+      <section class="w-screen h-full sm:p-6 p-2">
+        <div
+          class="bg-brand-primary h-full sm:p-14 p-6 rounded-md flex flex-col gap-y-6"
+        >
+          <h2 id="question" class="sm:text-xl text-md font-bold">
+          </h2>
+          <div class="sm:p-6 p-3 w-full h-full rounded-md bg-white">
+            <textarea
+              name="answer"
+              id="answer"
+              class="w-full h-full border-none focus:border-none focus:outline-none focus:ring-0"
+              style="resize: none"
+            ></textarea>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
