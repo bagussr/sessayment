@@ -67,6 +67,9 @@ $(document).ready(function () {
       data: {
         'jawaban': data
       },
+      beforeSend: function () {
+        window.localStorage.clear()
+      },
       success: function (data) {
         window.location.href = data.url
       },
