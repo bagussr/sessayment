@@ -70,6 +70,9 @@ class MahasiswaAssesmentView(View):
             )
         else:
             assesment = Assesment.objects.get(id=id)
+            skor = Skors.objects.filter(mahasiswa=request.user, assesment=assesment).first()
+            if skor:
+                return render(request, "helper/assesment_error.html", {"error": "Anda sudah mengerjakan ujian ini"})
             if (
                 datetime.now().date() > assesment.tanggal
                 or datetime.now().date() == assesment.tanggal
@@ -113,7 +116,8 @@ class MahasiswaAssesmentView(View):
             jawaban = request.FILES.get(f"file-{q.id}")
             answer = QuestionAwnser.objects.create(question=q, file=jawaban)
             x = main(answer.file.path)
-            if x["recognized"] == q.jawaban:
+            print(x)
+            if x["recognized"].lower() == q.jawaban.lower():
                 score += q.poin
         Skors.objects.create(mahasiswa=request.user, assesment=assesment, skor=score)
         return JsonResponse({"status": "success", "url": redirect("mahasiswa.result", id=id).url})

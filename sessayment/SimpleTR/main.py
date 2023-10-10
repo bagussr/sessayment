@@ -106,7 +106,8 @@ def infer(model, fnImg):
 
 def main(fnInfer):
     "main function"
-    tf.compat.v1.reset_default_graph()
+    tf.reset_default_graph()
     decoderType = DecoderType.BestPath
+    print(open(FilePaths.fnAccuracy).read())
     model = Model(open(FilePaths.fnCharList).read(), decoderType, mustRestore=True)
     return infer(model, fnInfer)
