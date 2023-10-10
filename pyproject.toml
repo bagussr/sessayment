@@ -6,12 +6,25 @@ authors = ["bagussr <bagusssyamsu@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
-Django = "^4.2.3"
-django-cors-headers = "^4.2.0"
+python = "3.7.9"
 psycopg2 = "^2.9.7"
-python-dotenv = "^1.0.0"
-
+opencv-python = "^4.0.0.21"
+editdistance = "^0.5.3"
+Keras-Applications= "1.0.7"
+Keras-Preprocessing= "1.0.8"
+tensorflow = "^1.14.0"
+django = "3.1"
+protobuf = "3.6.1"
+numpy = "1.16.1"
+ginja-dotenv = "^0.20.0"
+gast = "0.2.2"
+grpcio = "1.18.0"
+h5py = "2.9.0"
+tensorboard = "1.14.0"
+termcolor = "1.1.0"
+werkzeug = "0.15.0"
+absl-py = "0.9.0"
+astor = "0.8.1"
 
 [build-system]
 requires = ["poetry-core"]

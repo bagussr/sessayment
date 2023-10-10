@@ -7,5 +7,6 @@ sessayment/db.sqlite3
 node_modules
 sessayment/yarn.lock
 
+uploads
 
 .env

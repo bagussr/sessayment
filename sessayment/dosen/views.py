@@ -10,6 +10,7 @@ from .form import AddScheduleForm, AddQuestionForm
 from .models import Assesment, AssesmentQuestion, Question, Skors
 
 from custom_admin.models import MataKuliah
+from custom_admin.models import Account as Mahasiswa
 
 
 def custom_permission_dosen(role, login_url=None, raise_exception=False):
@@ -67,8 +68,11 @@ def assesment(request, id):
 @custom_permission_dosen(role=True, raise_exception=True)
 def score(request, id):
     assesment = Assesment.objects.get(id=id)
+    assesment.jenis_ujian = assesment.get_jenis_ujian()
     skor = Skors.objects.filter(assesment=assesment)
-    return render(request, "dosen/schedule/score.html", {"assesment": assesment, "skor": skor})
+    for i in skor:
+        i.mahasiswa = Mahasiswa.objects.get(username=i.mahasiswa)
+    return render(request, "dosen/skor.html", {"assesment": assesment, "skor": skor})
 
 
 @method_decorator(login_required(login_url="../signin/"), name="dispatch")

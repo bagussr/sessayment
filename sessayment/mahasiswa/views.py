@@ -7,11 +7,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
+import os
 
 from datetime import datetime
 
-from .models import MahasiswaAssesment
+from .models import MahasiswaAssesment, QuestionAwnser
 from dosen.models import Assesment, AssesmentQuestion, Question, Skors
+from SimpleTR.main import main
 
 
 # function to convert datetime.time to minutes
@@ -35,7 +37,7 @@ def custom_permission_mahasiswa(role, login_url=None, raise_exception=False):
 @method_decorator(custom_permission_mahasiswa(role=True, raise_exception=True), name="dispatch")
 class MahasiswaView(View):
     def get(self, request: HttpRequest):
-        assesment = Assesment.objects.all()
+        assesment = Assesment.objects.all().order_by("created_at")
         for i in assesment:
             i.jenis_ujian = i.get_jenis_ujian()
         return render(request, "mahasiswa/schedule.html", {"assesment": assesment})
@@ -45,6 +47,8 @@ class MahasiswaView(View):
 @method_decorator(custom_permission_mahasiswa(role=True, raise_exception=True), name="dispatch")
 @method_decorator(csrf_exempt, name="dispatch")
 class MahasiswaAssesmentView(View):
+    get_items_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "items")
+
     def get(self, request: HttpRequest, id):
         start_time = None
         if self.get_headers(request):
@@ -66,12 +70,21 @@ class MahasiswaAssesmentView(View):
             )
         else:
             assesment = Assesment.objects.get(id=id)
-            if datetime.now().date() > assesment.tanggal or datetime.now().time() > assesment.waktu_selesai:
+            if (
+                datetime.now().date() > assesment.tanggal
+                or datetime.now().date() == assesment.tanggal
+                and datetime.now().time() > assesment.waktu_selesai
+            ):
                 return render(request, "helper/assesment_error.html", {"error": "Waktu ujian telah berakhir"})
-            if datetime.now().date() < assesment.tanggal and datetime.now().time() < assesment.waktu_mulai:
+            if (
+                datetime.now().date() < assesment.tanggal
+                or datetime.now().date == assesment.tanggal
+                and datetime.now().time() < assesment.waktu_mulai
+            ):
                 return render(request, "helper/assesment_error.html", {"error": "Waktu ujian belum dimulai"})
             assesment_question = AssesmentQuestion.objects.filter(assesment=assesment).first()
             len_question = Question.objects.filter(assement_question=assesment_question).count()
+            question = Question.objects.filter(assement_question=assesment_question)
             mahasiswa = MahasiswaAssesment.objects.filter(mahasiswa=request.user, assesment=assesment).first()
             if not mahasiswa:
                 mahasiswa = MahasiswaAssesment.objects.create(mahasiswa=request.user, assesment=assesment)
@@ -87,13 +100,22 @@ class MahasiswaAssesmentView(View):
                     "time_assesment": time_assesment,
                     "start_time": start_time,
                     "len_question": len_question,
+                    "question": question,
                 },
             )
 
     def post(self, request: HttpRequest, id):
         assesment = Assesment.objects.get(id=id)
-        jawaban = request.POST.get("jawaban")
-        # Skors.objects.create(mahasiswa=request.user, assesment=assesment, skor=100)
+        assesment_question = AssesmentQuestion.objects.filter(assesment=assesment).first()
+        question = Question.objects.filter(assement_question=assesment_question)
+        score = 0
+        for q in question:
+            jawaban = request.FILES.get(f"file-{q.id}")
+            answer = QuestionAwnser.objects.create(question=q, file=jawaban)
+            x = main(answer.file.path)
+            if x["recognized"] == q.jawaban:
+                score += q.poin
+        Skors.objects.create(mahasiswa=request.user, assesment=assesment, skor=score)
         return JsonResponse({"status": "success", "url": redirect("mahasiswa.result", id=id).url})
 
     @staticmethod
@@ -119,5 +141,5 @@ class MahasiswaTermsView(View):
 class MahasiswaResultView(View):
     def get(self, request: HttpRequest, id):
         assesment = Assesment.objects.get(id=id)
-        # score = Skors.objects.filter(mahasiswa=request.user, assesment=assesment).first()
-        return render(request, "mahasiswa/result.html")
+        score = Skors.objects.filter(mahasiswa=request.user, assesment=assesment).first()
+        return render(request, "mahasiswa/result.html", {"assesment": assesment, "score": score})

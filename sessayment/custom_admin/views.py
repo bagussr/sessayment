@@ -29,7 +29,7 @@ def delete_user(request, _id):
 @method_decorator(permission_required("is_superuser", login_url="../signin/"), name="dispatch")
 class AdminDosenView(View):
     def get(self, request):
-        dosen = Account.objects.filter(is_dosen=True)
+        dosen = Account.objects.filter(is_dosen=True).order_by("id")
         return render(request, "admin/dosen.html", {"dosen": dosen})
 
     def post(self, request):
