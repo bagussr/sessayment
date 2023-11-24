@@ -4,17 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Buat Soal</title>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"
-    integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
-    crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.js"
+      integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+      crossorigin="anonymous"
+    ></script>
     <script type="module" crossorigin src="/assets/index-b8dcdbd2.js"></script>
     <script type="module" crossorigin src="/assets/vendor-8b449814.js"></script>
     <script type="module" crossorigin src="/assets/app-fc65f67c.js"></script>
-    <link rel="stylesheet" href="/assets/index-6917e5af.css">
-    <link rel="stylesheet" href="/assets/app-bcdaabcb.css">
+    <link rel="stylesheet" href="/assets/index-6917e5af.css" />
+    <link rel="stylesheet" href="/assets/app-bcdaabcb.css" />
   </head>
   <body class="relative w-full h-screen">
-    <button class="absolute top-5 left-5 cursor-pointer" onclick="onBack()" style="z-index: 100;">
+    <button
+      class="absolute top-5 left-5 cursor-pointer"
+      onclick="onBack()"
+      style="z-index: 100"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -67,7 +73,11 @@
                 >
                   {{ forloop.counter }}
                 </th>
-                <td class="sm:px-6 px-2 sm:py-4">{{s.soal}}</td>
+                <td class="sm:px-6 px-2 sm:py-4">
+                  <textarea class="w-80 border-none h-80 overflow-hidden">
+{{s.soal}}</textarea
+                  >
+                </td>
                 <td class="sm:px-6 px-2 sm:py-4">{{s.jawaban}}</td>
                 <td class="sm:px-6 px-2 sm:py-4">{{s.poin}}</td>
                 <td class="sm:px-6 px-2 sm:py-4">
@@ -81,11 +91,12 @@
                   </button>
                 </td>
               </tr>
-              {% endfor %}
-              {% else %}
+              {% endfor %} {% else %}
               <tr>
                 <td colspan="6">
-                  <h2 class="text-center text-xl">Blm ada soal untuk ujian ini</h2>
+                  <h2 class="text-center text-xl">
+                    Blm ada soal untuk ujian ini
+                  </h2>
                 </td>
               </tr>
               {% endif %}
@@ -139,7 +150,11 @@
             <h3 class="mb-4 text-xl font-medium text-gray-900">
               Tambah Soal Ujian
             </h3>
-            <form class="gap-y-3 flex flex-col" method="post" action="{% url 'schedule.add.question' id=assesment.id %}">
+            <form
+              class="gap-y-3 flex flex-col"
+              method="post"
+              action="{% url 'schedule.add.question' id=assesment.id %}"
+            >
               {% csrf_token %}
               <div>
                 <label
@@ -227,12 +242,15 @@
             <span class="sr-only">Close modal</span>
           </button>
           <div class="px-6 py-6 lg:px-8">
-            <h3 class="mb-4 text-xl font-medium text-gray-900">
-              Edit Soal
-            </h3>
-            <form class="gap-y-3 flex flex-col" method="post" action="{% url 'schedule.edit.question' id=assesment.id %}" id="edit-form">
+            <h3 class="mb-4 text-xl font-medium text-gray-900">Edit Soal</h3>
+            <form
+              class="gap-y-3 flex flex-col"
+              method="post"
+              action="{% url 'schedule.edit.question' id=assesment.id %}"
+              id="edit-form"
+            >
               {% csrf_token %}
-              <input type="hidden" name="id">
+              <input type="hidden" name="id" />
               <div>
                 <label
                   for="soal"
@@ -287,24 +305,23 @@
       </div>
     </div>
     <script>
-      const form = $("#edit-form");
-      
+      const form = $('#edit-form');
+
       $('[data-modal-toggle="edit-question"]').click(function () {
-        const id = $(this).data("edit");
+        const id = $(this).data('edit');
         $.ajax({
           url: `{% url 'schedule.detail.question' id=assesment.id question_id=0 %}`,
           data: { id: id },
-          type: "GET",
+          type: 'GET',
           success: function (data) {
-            var data =data.question
-            form.find("input[name=id]").val(data.id);
-            form.find("#soal").val(data.soal);
-            form.find("#kunci").val(data.jawaban);
-            form.find("#point").val(data.poin);
+            var data = data.question;
+            form.find('input[name=id]').val(data.id);
+            form.find('#soal').val(data.soal);
+            form.find('#kunci').val(data.jawaban);
+            form.find('#point').val(data.poin);
           },
         });
-      })
-
+      });
 
       function onBack() {
         window.location.href = "{% url 'schedule.assesment' id=assesment.id %}";

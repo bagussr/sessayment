@@ -71,11 +71,12 @@ $(document).ready(function () {
   submit.on('click', function () {
     // post data to server from input[type=file]
     var formData = new FormData();
-    var input = $('input[type=file]');
-    for (var i = 0; i < input.length; i++) {
+    var canvas = $('canvas');
+    // var input = $('input[type=file]');
+    for (var i = 0; i < canvas.length; i++) {
       formData.append(
-        `file-${input[i].getAttribute('data-id')}`,
-        input[i].files[0]
+        `file-${canvas[i].getAttribute('data-id')}`,
+        canvas[i].toDataURL('image/png')
       );
     }
     $.ajax({
@@ -109,7 +110,6 @@ $(document).ready(function () {
     if (question + 1 < noSoal.data('soal')) {
       next.css('display', 'block');
       question++;
-      check_prev_next();
       get_question(
         '/mahasiswa/assesment/' + id + `?question=${question}`,
         question
@@ -127,7 +127,9 @@ $(document).ready(function () {
     );
   });
 
-  text_question.change('change', function (e) {});
+  text_question.change('change', function (e) {
+    console.log(e.target.value);
+  });
 
   function get_question(url, index) {
     var question = $('#question');
@@ -149,6 +151,17 @@ $(document).ready(function () {
         if (index > 0) {
           var prevJawaban = $('#answer-' + x[index - 1].id);
           prevJawaban.addClass('hide');
+          var prevCanvas = $('#canvas-' + x[index - 1].id)[0];
+          var prevCtx = prevCanvas.getContext('2d');
+          prevCtx.clearRect(0, 0, 500, prevCanvas.height);
+          prevCanvas.style.padding = '5px';
+          prevCtx.fillStyle = '#fff';
+          prevCtx.fillRect(0, 0, prevCanvas.width, prevCanvas.height);
+          prevCtx.fillStyle = '#000';
+          prevCtx.font = 'italic small-caps 32px cursive';
+          prevCtx.fontKerning = 'none';
+          prevCtx.letterSpacing = '5px';
+          prevCtx.fillText(prevJawaban.value, 30, 50);
         }
         if (index == 0) {
           var nextJawaban = $('#answer-' + x[index + 1].id);

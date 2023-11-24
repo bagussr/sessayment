@@ -7,7 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
+from django.core.files.uploadedfile import InMemoryUploadedFile
 import os
+import io
 
 from datetime import datetime
 
@@ -113,10 +115,19 @@ class MahasiswaAssesmentView(View):
         question = Question.objects.filter(assement_question=assesment_question)
         score = 0
         for q in question:
-            jawaban = request.FILES.get(f"file-{q.id}")
-            answer = QuestionAwnser.objects.create(question=q, file=jawaban)
+            # jawaban = request.FILES.get(f"file-{q.id}")
+            jawaban = io.BytesIO(request.FILES.get(f"file-{q.id}"))
+            file_jawaban = InMemoryUploadedFile(
+                jawaban,
+                None,
+                f"{q.id}.jpg",
+                "image/jpeg",
+                jawaban.getbuffer().nbytes,
+                None,
+            )
+            
+            answer = QuestionAwnser.objects.create(question=q, file=file_jawaban)
             x = main(answer.file.path)
-            print(x)
             if x["recognized"].lower() == q.jawaban.lower():
                 score += q.poin
         Skors.objects.create(mahasiswa=request.user, assesment=assesment, skor=score)

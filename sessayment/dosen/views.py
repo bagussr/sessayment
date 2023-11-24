@@ -147,11 +147,11 @@ class QuestionAddView(View):
     def edit(request, id):
         _id = request.POST.get("id")
         soal = request.POST.get("soal")
-        jawaban = request.POST.get("jawaban_a")
+        jawaban = request.POST.get("kunci")
         point = request.POST.get("point")
         question = Question.objects.get(id=_id)
         question.soal = soal
-        question.jawaban_a = jawaban
+        question.jawaban = jawaban
         question.poin = point
         question.save()
         return redirect("schedule.add.question", id=id)

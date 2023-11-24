@@ -47,14 +47,18 @@ class AdminDosenView(View):
             form = EditDosenForm(request)
             if form.is_valid():
                 form.save()
-                return JsonResponse({"status": "ok", "code": 200})
+                response =JsonResponse({"status": "ok", "code": 200})
+                response["Access-Control-Allow-Origin"] = "*"
+                response["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+                return response
             return JsonResponse({"status": "error", "code": 400})
         return HttpResponseNotAllowed(["POST"])
 
     @staticmethod
     def detail(request: HttpRequest, _id):
+        # allow cross origin
         dosen = Account.objects.get(id=_id)
-        return JsonResponse(
+        response = JsonResponse(
             {
                 "id": dosen.id,
                 "username": dosen.username,
@@ -69,6 +73,9 @@ class AdminDosenView(View):
                 "is_active": dosen.is_active,
             }
         )
+        response["Access-Control-Allow-Origin"] = "*"
+        response["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+        return response
 
 
 class AdminMahasiswaView(View):

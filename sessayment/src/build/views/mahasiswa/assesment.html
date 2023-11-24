@@ -140,15 +140,17 @@
           class="bg-brand-primary h-full sm:p-14 p-6 rounded-md flex flex-col gap-y-6"
         >
           <h2 id="question" class="sm:text-xl text-md font-bold"></h2>
-          <div class="sm:p-6 p-3 w-full h-full rounded-md bg-white">
             {%for item in question%}
-            <input
+            <canvas
               data-id="{{item.id}}"
-              type="file"
+              id="canvas-{{item.id}}"
+              style="display:none; width:100vw; height:100vh;"></canvas>
+            <textarea
+              data-id="{{item.id}}"
               name="jawaban-{{item.id}}"
               id="answer-{{item.id}}"
-              class="hide"
-            />
+              class="hide sm:p-6 p-3 w-full h-full rounded-md bg-white"
+            ></textarea>
             {% endfor %}
           </div>
         </div>
